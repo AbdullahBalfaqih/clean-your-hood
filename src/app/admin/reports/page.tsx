@@ -29,8 +29,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { cn } from "@/lib/utils"
 import { BarChart2 } from "lucide-react"
 
-export const revalidate = 0;
-
+ 
 function ReportsSkeleton() {
     return (
         <div className="space-y-6">

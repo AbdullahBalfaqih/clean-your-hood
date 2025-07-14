@@ -17,8 +17,7 @@ import { useToast } from "@/hooks/use-toast"
 import { useLanguage } from "@/components/theme-provider"
 import { forgotPassword } from "@/lib/actions/users.actions"
 
-export const revalidate = 0;
-
+ 
 export default function ForgotPasswordPage() {
     const [submitted, setSubmitted] = React.useState(false)
     const [password, setPassword] = React.useState("");

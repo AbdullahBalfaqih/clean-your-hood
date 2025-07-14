@@ -10,8 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { AlertCircle, History } from "lucide-react"
 
-export const revalidate = 0;
-
+ 
 const HistorySkeleton = () => (
     <Card>
         <CardHeader>

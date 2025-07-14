@@ -41,7 +41,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { formatDistanceToNow } from "date-fns"
 import { arSA } from "date-fns/locale"
 
-export const revalidate = 0;
+
 
 function DashboardSkeleton() {
     return (

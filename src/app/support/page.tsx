@@ -2,7 +2,7 @@
 
  import { SupportForm } from "./support-form"
 
-export const revalidate = 0;
+
 
 export default function SupportPage() {
   return (

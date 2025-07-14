@@ -41,8 +41,7 @@ import { AtSign, Lock, User, Phone, LocateFixed, Home, Building, MapPin, Send, L
 import { Checkbox } from "@/components/ui/checkbox"
 import { registerUser } from "@/lib/actions/users.actions"
 
-export const revalidate = 0;
-
+ 
 const InteractiveMap = dynamic(() => import('./interactive-map'), {
     ssr: false,
     loading: () => (

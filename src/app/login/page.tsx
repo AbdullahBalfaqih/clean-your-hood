@@ -24,8 +24,7 @@ import { Switch } from "@/components/ui/switch"
 import { useToast } from "@/hooks/use-toast"
 import { loginUser } from "@/lib/actions/users.actions"
 
-export const revalidate = 0;
-
+ 
 const loginFormSchema = z.object({
     phone: z.string().min(9, { message: "رقم الهاتف يجب أن يكون 9 أرقام." }).max(9, { message: "رقم الهاتف يجب أن يكون 9 أرقام." }),
     password: z.string().min(1, { message: "كلمة المرور مطلوبة." }),

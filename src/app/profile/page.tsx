@@ -48,8 +48,7 @@ import { useLanguage } from "@/components/theme-provider"
 import { getUserProfile, updateUserProfile, updateUserAddress, changeUserPassword, deleteUser } from "@/lib/actions/users.actions"
 import { Skeleton } from "@/components/ui/skeleton"
 
-export const revalidate = 0;
-
+ 
 const InteractiveMap = dynamic(() => import('../register/interactive-map'), {
     ssr: false,
     loading: () => (
