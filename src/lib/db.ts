@@ -248,30 +248,43 @@ async function initializeDatabase(client: Pool) {
 
 export function getDbPool(): Pool {
     if (!hasDbCredentials) {
-        throw new Error("Database not configured. Check your .env file for POSTGRES_URL.");
+        throw new Error("Database not configured. Check your environment variables.");
     }
 
-    if (isVercel) {
-        const parsedConfig = parse(process.env.POSTGRES_URL || '');
-        const config = {
-            ...parsedConfig,
-            port: parsedConfig.port ? parseInt(parsedConfig.port, 10) : undefined,
-            database: parsedConfig.database ?? undefined,
-            ssl: { rejectUnauthorized: false },
-            host: parsedConfig.host ?? undefined,
-        };
+    // Use connection string if available (preferred for cloud services like Vercel/Supabase)
+    if (process.env.POSTGRES_URL) {
+        if (isVercel) {
+            const parsedConfig = parse(process.env.POSTGRES_URL);
+            const config = {
+                ...parsedConfig,
+                host: parsedConfig.host ?? undefined,
+                port: parsedConfig.port ? parseInt(parsedConfig.port, 10) : undefined,
+                database: parsedConfig.database ?? undefined,
+                ssl: { rejectUnauthorized: false }
+            };
+            return new Pool(config);
+        }
 
-        return new Pool(config);
+        if (!pool) {
+            pool = new Pool({ connectionString: process.env.POSTGRES_URL });
+            pool.on('error', (err: Error) => console.error('Unexpected error on idle PostgreSQL client', err));
+            initializeDatabase(pool);
+        }
+        return pool;
     }
 
-
+    // Fallback to individual environment variables
     if (!pool) {
-        console.log("Creating new PostgreSQL connection pool.");
+        console.log("Creating new PostgreSQL connection pool from individual variables.");
         pool = new Pool({
-            connectionString: process.env.POSTGRES_URL,
+            host: process.env.PGHOST,
+            database: process.env.PGDATABASE,
+            user: process.env.PGUSER,
+            password: process.env.PGPASSWORD,
+            port: process.env.PGPORT ? parseInt(process.env.PGPORT, 10) : 5432,
         });
 
-        pool.on('error', (err: Error, client: PoolClient) => {
+        pool.on('error', (err: Error) => {
             console.error('Unexpected error on idle PostgreSQL client', err);
             process.exit(-1);
         });
@@ -280,6 +293,7 @@ export function getDbPool(): Pool {
     }
     return pool;
 }
+
 
 export async function query(text: string, params: any[]) {
     if (isInitializing && !isVercel) {
