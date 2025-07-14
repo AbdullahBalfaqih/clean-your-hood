@@ -11,6 +11,8 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { AlertCircle } from "lucide-react"
 
+export const revalidate = 0;
+
 const RewardsSkeleton = () => (
     <div className="grid gap-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

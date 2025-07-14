@@ -7,6 +7,8 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 
+export const revalidate = 0;
+
 const FeedbackSkeleton = () => (
     <Card>
         <CardHeader>

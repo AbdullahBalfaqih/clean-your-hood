@@ -8,6 +8,8 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import { getLandmarks, type Landmark } from "@/lib/actions/landmarks.actions";
 
+export const revalidate = 0;
+
 const MapSkeleton = () => (
     <Card>
         <CardHeader>
