@@ -158,7 +158,11 @@ function ProfilePageContent() {
                     memoizedAddressReset({
                         address: profileData.Address || "",
                         landmark: profileData.Landmark || "",
-                        coordinates: profileData.Latitude && profileData.Longitude ? `${profileData.Latitude.toFixed(6)}, ${profileData.Longitude.toFixed(6)}` : "",
+                        coordinates:
+                            !isNaN(Number(profileData.Latitude)) && !isNaN(Number(profileData.Longitude))
+                                ? `${Number(profileData.Latitude).toFixed(6)}, ${Number(profileData.Longitude).toFixed(6)}`
+                                : "",
+
                     });
                     if (profileData.Latitude && profileData.Longitude) {
                         setLocation({ lat: profileData.Latitude, lng: profileData.Longitude });

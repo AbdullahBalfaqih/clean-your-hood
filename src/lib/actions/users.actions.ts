@@ -16,7 +16,7 @@ export type User = {
     Latitude: number | null;
     Longitude: number | null;
     PointsBalance: number;
-    PhotoURL: string | null;
+   
 }
 
 const userFormSchema = z.object({
@@ -50,7 +50,7 @@ const profileFormUpdateSchema = z.object({
     fullName: z.string().min(1, "الاسم الكامل مطلوب."),
     phone: z.string().regex(/^(70|71|73|77|78)\d{7}$/, { message: "يجب أن يكون رقم هاتف يمني صحيح." }),
     email: z.string().email({ message: "بريد إلكتروني غير صالح." }).optional().or(z.literal('')),
-    photoURL: z.string().optional(),
+    
 });
 
 const addressFormUpdateSchema = z.object({
@@ -68,7 +68,7 @@ const securityFormUpdateSchema = z.object({
 export async function getUsers(): Promise<User[]> {
     try {
         const result = await query(`
-          SELECT "UserID", "FullName", "Email", "PhoneNumber", "Role", "Address", "Landmark", "Latitude", "Longitude", "PointsBalance", "PhotoURL" 
+          SELECT "UserID", "FullName", "Email", "PhoneNumber", "Role", "Address", "Landmark", "Latitude", "Longitude", "PointsBalance"
           FROM "Users" 
           ORDER BY "CreatedAt" DESC
         `, [])
@@ -81,7 +81,7 @@ export async function getUsers(): Promise<User[]> {
 
 export async function getUserProfile(userId: number): Promise<User | null> {
     try {
-        const result = await query('SELECT "UserID", "FullName", "Email", "PhoneNumber", "Role", "Address", "Landmark", "Latitude", "Longitude", "PointsBalance", "PhotoURL" FROM "Users" WHERE "UserID" = $1', [userId]);
+        const result = await query('SELECT "UserID", "FullName", "Email", "PhoneNumber", "Role", "Address", "Landmark", "Latitude", "Longitude", "PointsBalance" FROM "Users" WHERE "UserID" = $1', [userId]);
         if (result.rows.length === 0) {
             return null;
         }
@@ -268,10 +268,12 @@ export async function forgotPassword(email: string): Promise<{ success: boolean;
 export async function updateUserProfile(userId: number, data: z.infer<typeof profileFormUpdateSchema>) {
     try {
         const validatedData = profileFormUpdateSchema.parse(data);
+
         await query(
-            'UPDATE "Users" SET "FullName" = $1, "PhoneNumber" = $2, "Email" = $3, "PhotoURL" = $4 WHERE "UserID" = $5',
-            [validatedData.fullName, validatedData.phone, validatedData.email || null, validatedData.photoURL, userId]
+            'UPDATE "Users" SET "FullName" = $1, "PhoneNumber" = $2, "Email" = $3 WHERE "UserID" = $4',
+            [validatedData.fullName, validatedData.phone, validatedData.email || null, userId]
         );
+
         revalidatePath('/profile');
         return { success: true, message: "تم تحديث الملف الشخصي" };
     } catch (error) {
@@ -279,6 +281,7 @@ export async function updateUserProfile(userId: number, data: z.infer<typeof pro
         return { success: false, message: 'فشل الاتصال بقاعدة البيانات. لا يمكن إكمال الإجراء.' };
     }
 }
+
 
 export async function updateUserAddress(userId: number, data: z.infer<typeof addressFormUpdateSchema>) {
     try {
